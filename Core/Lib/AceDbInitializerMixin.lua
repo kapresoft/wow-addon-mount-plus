@@ -2,9 +2,9 @@
 Local Vars
 -------------------------------------------------------------------------------]]
 --- @type Namespace
-local _, ns = ...
-local O, LibStub, M, KO = ns.O, ns.LibStub, ns.M, ns:KO()
-local GC, AceDB = O.GlobalConstants, O.AceLibrary.AceDB
+local ns = select(2, ...)
+local O, GC, M, LibStub, KO = ns.O, ns.GC, ns.M, ns.LibStub, ns:KO()
+local AceDB = O.AceLibrary.AceDB
 local IsEmptyTable = KO.Table.isEmpty
 
 --[[-----------------------------------------------------------------------------
@@ -12,38 +12,39 @@ New Instance
 -------------------------------------------------------------------------------]]
 --- @class AceDbInitializerMixin : BaseLibraryObject
 local L = LibStub:NewLibrary(M.AceDbInitializerMixin)
-local p = L.logger;
-
---- Called by Mixin Automatically
---- @param addon AddonTemplate
-function L:Init(addon)
-    self.addon = addon
-    self.addon.db = AceDB:New(GC.C.DB_NAME)
-    self.addon.dbInit = self
-    self.db = self.addon.db
-end
+local p = ns:LC().DB:NewLogger(M.AceDbInitializerMixin)
 
 --[[-----------------------------------------------------------------------------
 Methods
 -------------------------------------------------------------------------------]]
---- @param a AddonTemplate
+--- @param a MountPlus
 local function AddonCallbackMethods(a)
     function a:OnProfileChanged()
-        p:log('OnProfileChanged called...')
+        p:vv('OnProfileChanged called...')
     end
     function a:OnProfileChanged()
-        p:log('OnProfileReset called...')
+        p:vv('OnProfileReset called...')
     end
     function a:OnProfileChanged()
-        p:log('OnProfileCopied called...')
+        p:vv('OnProfileCopied called...')
     end
 end
 
 --- @param o AceDbInitializerMixin
-local function Methods(o)
+local function PropsAndMethods(o)
+
+    --- Called by CreateAndInitFromMixin(..) Automatically
+    --- @param addon MountPlus
+    function o:Init(addon)
+        self.addon = addon
+        self.addon.db = AceDB:New(GC.C.DB_NAME)
+        self.addon.dbInit = self
+        self.db = self.addon.db
+        ns:SetAddOnDB(self.db)
+    end
 
     --- Usage:  local instance = AceDbInitializerMixin:New(addon)
-    --- @param addon AddonTemplate
+    --- @param addon MountPlus
     --- @return AceDbInitializerMixin
     function o:New(addon) return ns:K():CreateAndInitFromMixin(o, addon) end
 
@@ -51,7 +52,7 @@ local function Methods(o)
     function o:GetDB() return self.addon.db end
 
     function o:InitDb()
-        p:log(100, 'Initialize called...')
+        p:f1( 'Initialize called...')
         AddonCallbackMethods(self.addon)
         self.db.RegisterCallback(self.addon, "OnProfileChanged", "OnProfileChanged")
         self.db.RegisterCallback(self.addon, "OnProfileReset", "OnProfileChanged")
@@ -68,9 +69,6 @@ local function Methods(o)
         local wowDB = _G[GC.C.DB_NAME]
         if IsEmptyTable(wowDB.profiles[profileName]) then wowDB.profiles[profileName] = defaultProfile end
         self.addon.profile.enable = true
-        p:log(1, 'Profile: %s', self.db:GetCurrentProfile())
+        p:i(function() return 'Profile: %s', self.db:GetCurrentProfile() end)
     end
-end
-
-Methods(L)
-
+end; PropsAndMethods(L)

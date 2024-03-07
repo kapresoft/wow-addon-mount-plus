@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 env:
-  addonName: AddonTemplate
-  curseForgeProjectId: 782096
+  addonName: MountPlus
+  curseForgeProjectId: 982634
   uploadBuildArtifacts: true
   createDraftRelease: true
   artifact_retentionDays: 7

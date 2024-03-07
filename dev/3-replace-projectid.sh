@@ -2,7 +2,7 @@
 
 templateProjID="782096"
 # add the new projectID
-newProjID="NEWPROJECTID"
+newProjID="982634"
 
 echo "Renaming occurrences of ProjectID[$templateProjID] to $newProjID"
 fileTypes="-name '*.toc' -o -name '*.xml' -o -name '*.yaml' -o -name '*.yml' -o -name '*.yaml'"

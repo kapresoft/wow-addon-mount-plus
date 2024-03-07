@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-newProjName="AddonSuite"
+newProjName="MountPlus"
 echo "Renaming occurrences of AddonTemplate to $newProjName":
 
 find . -type f -name '*.lua' -exec grep 'AddonTemplate' {} +

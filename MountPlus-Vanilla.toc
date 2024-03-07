@@ -1,11 +1,11 @@
-## Interface: 20504
+## Interface: 11403
 ## Version: @project-version@
-## Title: AddonTemplate|cff1784d1 TBC|r
+## Title: MountPlus|cff1784d1 Classic|r
 ## Notes: {{Addon-Short-Description}}
 ## Author: kapresoft@gmail.com
 ## DefaultState: enabled
-## SavedVariables: ADT_DB, ADT_LOG_LEVEL, ADT_DEBUG_MODE
-## SavedVariablesPerCharacter: ADT_CHARACTER_DB
+## SavedVariables: MOUNTP_DB, MOUNTP_LOG_LEVEL, MOUNTP_DEBUG_MODE, MOUNTP_DEBUG_ENABLED_CATEGORIES
+## SavedVariablesPerCharacter: MOUNTP_CHARACTER_DB
 ## LoadManagers: AddonLoader
 
 ## X-LoadOn-Always: delayed
@@ -26,4 +26,4 @@
 # /dump select(4, GetBuildInfo())
 
 Core\_Core.xml
-TBC\_TBC.xml
+Vanilla\_Vanilla.xml

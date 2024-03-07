@@ -16,13 +16,13 @@ local LibStub = LibStub
 
 --- @type string
 local addon
---- @type Namespace
+--- @type Kapresoft_Base_Namespace
 local ns
 addon, ns = ...
 
-local addonShortName = 'ADT'
-local consoleCommand = "adt"
-local globalVarName = "ADT"
+local addonShortName = 'MOUNTP'
+local consoleCommand = "mountp"
+local globalVarName = "MOUNTP"
 local useShortName = false
 
 local globalVarPrefix = globalVarName .. "_"
@@ -33,6 +33,16 @@ local debugMode = globalVarPrefix .. 'DEBUG_MODE'
 local ADDON_INFO_FMT = '%s|cfdeab676: %s|r'
 local TOSTRING_ADDON_FMT = '|cfdfefefe{{|r|cfdeab676%s|r|cfdfefefe}}|r'
 local TOSTRING_SUBMODULE_FMT = '|cfdfefefe{{|r|cfdeab676%s|r|cfdfefefe::|r|cfdfbeb2d%s|r|cfdfefefe}}|r'
+
+--[[-----------------------------------------------------------------------------
+Console Colors
+-------------------------------------------------------------------------------]]
+--- @type Kapresoft_LibUtil_ColorDefinition
+local consoleColors = {
+    primary   = '62A3FB',
+    secondary = 'fbeb2d',
+    tertiary = 'ffffff',
+}
 
 --[[-----------------------------------------------------------------------------
 Support Functions
@@ -66,19 +76,21 @@ GlobalConstants
 --- @class GlobalConstants
 local L = LibStub:NewLibrary(LibName('GlobalConstants'), 1)
 
+local kapresoftColor = '31B8FB'
+local consoleCommandTextFormat = '|cfd2db9fb%s|r'
+local consoleKeyValueTextFormat = '|cfdfbeb2d%s|r: %s'
+local command = sformat("/%s", consoleCommand)
+local commandText = sformat(consoleCommandTextFormat, command)
+local consoleCommandMessageFormat = sformat('Type %s for available commands.', commandText)
+
 --- @param o GlobalConstants
 local function GlobalConstantProperties(o)
-
-    local consoleCommandTextFormat = '|cfd2db9fb%s|r'
-    local consoleKeyValueTextFormat = '|cfdfbeb2d%s|r: %s'
-    local command = sformat("/%s", consoleCommand)
-
     --- @class GlobalAttributes
     local C = {
         VAR_NAME = globalVarName,
         CONSOLE_COMMAND_NAME = consoleCommand,
+        CONSOLE_COLORS = consoleColors,
         DB_NAME = dbName,
-        CHECK_VAR_SYNTAX_FORMAT = '|cfdeab676%s ::|r %s',
         CONSOLE_HEADER_FORMAT = '|cfdeab676### %s ###|r',
         CONSOLE_OPTIONS_FORMAT = '  - %-8s|cfdeab676:: %s|r',
 
@@ -86,8 +98,8 @@ local function GlobalConstantProperties(o)
         CONSOLE_KEY_VALUE_TEXT_FORMAT = consoleKeyValueTextFormat,
 
         CONSOLE_PLAIN = command,
-        COMMAND      = sformat(consoleCommandTextFormat, command),
-        HELP_COMMAND = sformat(consoleCommandTextFormat, command .. ' help'),
+        COMMAND      = commandText,
+        HELP_COMMAND = commandText .. ' help',
     }
 
     --- @class EventNames
@@ -145,9 +157,9 @@ local function Methods(o)
         local wowInterfaceVersion = select(4, GetBuildInfo())
 
         return versionText, GetAddOnMetadata(ns.name, 'X-CurseForge'),
-            GetAddOnMetadata(ns.name, 'X-Github-Issues'),
-            GetAddOnMetadata(ns.name, 'X-Github-Repo'),
-            lastUpdate, wowInterfaceVersion
+        GetAddOnMetadata(ns.name, 'X-Github-Issues'),
+        GetAddOnMetadata(ns.name, 'X-Github-Repo'),
+        lastUpdate, wowInterfaceVersion
     end
 
     function o:GetAddonInfoFormatted()
@@ -162,6 +174,15 @@ local function Methods(o)
                 sformat(ADDON_INFO_FMT, 'Last-Update', lastUpdate),
                 sformat(ADDON_INFO_FMT, 'Interface-Version', wowInterfaceVersion)
         )
+    end
+
+    function o:GetMessageLoadedText()
+        --- @type Namespace
+        local nx = ns
+        local version = self:GetAddonInfo()
+        return sformat("%s version %s by %s is loaded. %s",
+                nx.ch:P(nx.name) , version, nx.ch:FormatColor(kapresoftColor, 'kapresoft'),
+                consoleCommandMessageFormat)
     end
 
     o.LibName = LibName

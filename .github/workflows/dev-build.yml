@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 env:
-  addonName: AddonTemplate
-  curseForgeProjectId: 782096
+  addonName: MountPlus
+  curseForgeProjectId: 982634
   releaseDir: ./.release
 
 jobs:

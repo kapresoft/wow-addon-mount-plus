@@ -1,0 +1,5 @@
+<Bindings>
+    <Binding name="MOUNTP_OPTIONS_DLG" category="AddOns/MountPlus" header="MOUNTP_OPTIONS">
+        ADT:OpenConfig();
+    </Binding>
+</Bindings>
