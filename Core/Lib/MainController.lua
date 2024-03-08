@@ -86,7 +86,7 @@ local function InstanceMethods(o)
 
     --- @private
     function L:OnAddonReady()
-        O.OptionsMixin:New(self.addon):InitOptions()
+        -- todo
     end
 
     --- @private
